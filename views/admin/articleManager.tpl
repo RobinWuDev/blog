@@ -11,7 +11,7 @@
          </thead>
         <tbody id="article_list">
              
-         <tbody>
+         </tbody>
     </table>
      <div id="pageNavId" class="span9 offset2" style="text-align: right;margin-bottom: 30px;">
       </div>

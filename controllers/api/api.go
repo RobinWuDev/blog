@@ -2,6 +2,7 @@ package api
 
 import (
 	"errors"
+	"fmt"
 	"github.com/astaxie/beego"
 	"lsdevBlog/models"
 	"strconv"
@@ -13,11 +14,18 @@ type ApiController struct {
 }
 
 func (this *ApiController) Post() {
-	defer models.ErrorRecover(&this.Controller)()
 
+	defer models.ErrorRecover(&this.Controller)()
 	this.Ctx.Request.ParseForm()
 
 	action := this.Ctx.Request.Form.Get("action")
+	if action != "login" {
+		err := checkSession(this)
+		if err != nil {
+			models.CheckErr(err, "操作失败")
+			return
+		}
+	}
 	switch action {
 	case "addCategory":
 		addCategory(this)
@@ -27,18 +35,27 @@ func (this *ApiController) Post() {
 		editArticle(this)
 	case "editCategory":
 		editCategory(this)
+	case "login":
+		login(this)
 	default:
 		models.CheckErr(errors.New("没有找到服务"), "调用接口失败")
 
 	}
+	this.Ctx.ContentType("application/json;chareset=utf-8")
 }
 
 func (this *ApiController) Get() {
 	defer models.ErrorRecover(&this.Controller)()
 
 	this.Ctx.Request.ParseForm()
-
 	action := this.Ctx.Request.Form.Get("action")
+	if action == "delCategory" || action == "delArticle" {
+		err := checkSession(this)
+		if err != nil {
+			models.CheckErr(err, "错误失败")
+			return
+		}
+	}
 	switch action {
 	case "index":
 		index(this)
@@ -60,6 +77,17 @@ func (this *ApiController) Get() {
 		models.CheckErr(errors.New("没有找到服务"), "调用接口失败")
 
 	}
+	this.Ctx.ContentType("application/json;chareset=utf-8")
+}
+
+//sessin是否正确
+func checkSession(this *ApiController) error {
+	session := fmt.Sprintln(this.Ctx.Request.Form.Get("sessionId"))
+	beego.Info(session)
+	if session != session {
+		return errors.New("session过期")
+	}
+	return nil
 }
 
 //index接口
@@ -110,6 +138,7 @@ func index(this *ApiController) {
 	data.Data = tempData
 	this.Data["json"] = &data
 	this.ServeJson()
+	beego.Info("获取首页数据成功")
 }
 
 //category接口
@@ -133,6 +162,8 @@ func addCategory(this *ApiController) {
 		data := models.Data{Status: true, Msg: "添加成功", Data: tempData}
 		this.Data["json"] = &data
 		this.ServeJson()
+		beego.Info(fmt.Sprintln("添加类型成功:", title))
+		return
 	}
 	models.CheckErr(errors.New("类别名长度为0"), "添加类别失败")
 }
@@ -163,6 +194,8 @@ func editCategory(this *ApiController) {
 		data := models.Data{Status: true, Msg: "编辑成功", Data: tempData}
 		this.Data["json"] = &data
 		this.ServeJson()
+		beego.Info(fmt.Sprintln("编辑类别成功:", title))
+		return
 	}
 	models.CheckErr(errors.New("类别名长度为0"), "编辑类别失败")
 }
@@ -182,6 +215,8 @@ func delCategory(this *ApiController) {
 		data := models.Data{Status: false, Msg: "删除成功", Data: tempData}
 		this.Data["json"] = &data
 		this.ServeJson()
+		beego.Info(fmt.Sprintln("删除类别成功:", article.Title))
+		return
 	}
 
 	models.CheckErr(errors.New("类别不存在"), "")
@@ -211,6 +246,7 @@ func categoryList(this *ApiController) {
 	data.Data = tempData
 	this.Data["json"] = &data
 	this.ServeJson()
+	beego.Info("获得类别列表成功")
 }
 
 //acticle接口
@@ -255,6 +291,7 @@ func articleList(this *ApiController) {
 	data.Data = tempData
 	this.Data["json"] = &data
 	this.ServeJson()
+	beego.Info("获得文章列表成功")
 }
 
 func delArticle(this *ApiController) {
@@ -262,7 +299,10 @@ func delArticle(this *ApiController) {
 	models.CheckErr(err, "文章id错误")
 
 	article, err := models.GetArticle(id)
-	models.CheckErr(err, "删除文章失败")
+	if err != nil {
+		models.CheckErr(err, "删除文章失败")
+	}
+
 	if article.Id != 0 {
 
 		err := models.DelArticle(&article)
@@ -272,6 +312,8 @@ func delArticle(this *ApiController) {
 		data := models.Data{Status: false, Msg: "删除成功", Data: tempData}
 		this.Data["json"] = &data
 		this.ServeJson()
+		beego.Info(fmt.Sprintln("删除文章成功:", article.Title))
+		return
 	}
 
 	models.CheckErr(errors.New("文章不存在"), "")
@@ -284,6 +326,8 @@ func lenIsZero(str string, msg string) {
 }
 
 func addArticle(this *ApiController) {
+
+	beego.Info(this.Ctx.Request.Form)
 	title := this.Ctx.Request.Form.Get("title")
 	lenIsZero(title, "title为空")
 	content := this.Ctx.Request.Form.Get("content")
@@ -310,6 +354,7 @@ func addArticle(this *ApiController) {
 	data := models.Data{Status: true, Msg: "添加成功", Data: tempData}
 	this.Data["json"] = &data
 	this.ServeJson()
+	beego.Info(fmt.Sprintln("添加文章成功:", title))
 }
 
 func editArticle(this *ApiController) {
@@ -325,13 +370,13 @@ func editArticle(this *ApiController) {
 	tempArticle, err := models.GetArticle(id)
 	models.CheckErr(err, "编辑文章失败")
 	if tempArticle.Id == 0 {
-		models.CheckErr(errors.New("文章标题不存在"), "编辑文章失败")
+		models.CheckErr(errors.New("文章不存在"), "编辑文章失败")
 	}
 
 	tempArticle1, err := models.GetArticleByTitle(title)
-	models.CheckErr(err, "添加文章失败")
-	if tempArticle1.Id != 0 {
-		models.CheckErr(errors.New("类别文章已存在"), "编辑文章失败")
+	models.CheckErr(err, "编辑文章失败")
+	if tempArticle1.Id != 0 && title != tempArticle.Title {
+		models.CheckErr(errors.New("文章已存在"), "编辑文章失败")
 	}
 
 	tempArticle.Title = title
@@ -339,12 +384,13 @@ func editArticle(this *ApiController) {
 	tempArticle.CategoryId = categoryId
 	tempArticle.ModifyTime = time.Now().Format("2006-01-02 15:04:05")
 	err = models.AddArticle(&tempArticle)
-	models.CheckErr(err, "添加文章失败")
+	models.CheckErr(err, "编辑文章失败")
 
 	tempData := map[string]interface{}{"Article": tempArticle}
-	data := models.Data{Status: true, Msg: "添加成功", Data: tempData}
+	data := models.Data{Status: true, Msg: "编辑成功", Data: tempData}
 	this.Data["json"] = &data
 	this.ServeJson()
+	beego.Info(fmt.Sprintln("编辑文章成功:", title))
 }
 
 func articleIsExist(this *ApiController) {
@@ -397,4 +443,26 @@ func getAllCategory(this *ApiController) {
 	data.Data = tempData
 	this.Data["json"] = &data
 	this.ServeJson()
+}
+
+//登录接口
+func login(this *ApiController) {
+	username := this.Ctx.Request.Form.Get("text")
+	password := this.Ctx.Request.Form.Get("password")
+	if username == "lsdev" && password == "460490151" {
+		session := this.StartSession()
+		_ = session.Set("username", username)
+
+		data := models.Data{}
+		data.Status = true
+		data.Msg = "获取数据成功"
+		tempData := map[string]interface{}{
+			"Username": username, "Session": session.SessionID()}
+		data.Data = tempData
+		this.Data["json"] = &data
+		this.ServeJson()
+		return
+	}
+	models.CheckErr(errors.New("登陆失败"), "账号密码不对")
+
 }

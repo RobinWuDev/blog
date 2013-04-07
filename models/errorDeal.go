@@ -19,10 +19,8 @@ func ErrorRecover(this *beego.Controller) func() {
 			data.Data = nil
 			this.Data["json"] = &data
 			this.ServeJson()
-			fmt.Println("dddd")
-
+			beego.Error(data.Msg)
 		}
-		fmt.Println("ddd1")
 	}
 }
 

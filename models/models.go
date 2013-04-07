@@ -58,7 +58,9 @@ func GetArticle(id int) (article Article, err error) {
 		article.CategoryName = string(temp["category_name"])
 		article.CreateTime = string(temp["create_time"])
 		article.ModifyTime = string(temp["modify_time"])
+		return
 	}
+	err = errors.New("类别不存在")
 	return
 }
 

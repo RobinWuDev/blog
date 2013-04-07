@@ -37,7 +37,7 @@ function requestIndexData (page,categoryId) {
   						
 						$("#articles").append(""
 							+"<div class='hero-unit'>"
-            				+"<h3>"+value.Title+"</h3>"
+            				+"<h3><a href='/detailArticle?id="+value.Id+"' title='"+value.Title+"'>"+value.Title+"</a></h3>"
             				+"<p>文章类别:<a class='index_category' href='#' id='articleCategory_"+value.CategoryId+"'>"+value.CategoryName+"</a></p>"
             				+"<p>"+value.CreateTime+"</p>"
             				+"<p class='article_content'>"+html+"</p>"

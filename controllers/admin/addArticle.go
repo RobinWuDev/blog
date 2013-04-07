@@ -9,6 +9,11 @@ type AddArticleConroller struct {
 }
 
 func (this *AddArticleConroller) Get() {
-	this.TplNames = "/admin/add.tpl"
+	session := this.StartSession()
+	username := session.Get("username")
+	if username != "lsdev" {
+		this.Ctx.Redirect(302, "/admin/login")
+	}
+	this.TplNames = "/admin/addArticle.tpl"
 	this.Layout = "/admin/adminLayout.html"
 }
