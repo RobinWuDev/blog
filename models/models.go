@@ -60,7 +60,7 @@ func GetArticle(id int) (article Article, err error) {
 		article.ModifyTime = string(temp["modify_time"])
 		return
 	}
-	err = errors.New("类别不存在")
+	err = errors.New("文章不存在")
 	return
 }
 

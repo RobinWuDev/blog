@@ -67,6 +67,8 @@ func (this *ApiController) Get() {
 		delArticle(this)
 	case "articleList":
 		articleList(this)
+	case "articleDetail":
+		articleDetail(this)
 	case "articleIsExist":
 		articleIsExist(this)
 	case "categoryIsExist":
@@ -292,6 +294,28 @@ func articleList(this *ApiController) {
 	this.Data["json"] = &data
 	this.ServeJson()
 	beego.Info("获得文章列表成功")
+}
+
+func articleDetail(this *ApiController) {
+	id, err := strconv.Atoi(this.Ctx.Request.Form.Get("id"))
+	models.CheckErr(err, "文章id错误")
+
+	article, err := models.GetArticle(id)
+	if err != nil {
+		models.CheckErr(err, "获取文章详情")
+	}
+
+	if article.Id != 0 {
+
+		tempData := map[string]interface{}{"Article": article}
+		data := models.Data{Status: false, Msg: "获取文章成功", Data: tempData}
+		this.Data["json"] = &data
+		this.ServeJson()
+		beego.Info(fmt.Sprintln("获取文章详情成功:", article.Title))
+		return
+	}
+
+	models.CheckErr(errors.New("文章不存在"), "")
 }
 
 func delArticle(this *ApiController) {
