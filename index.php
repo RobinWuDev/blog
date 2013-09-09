@@ -2,6 +2,7 @@
 include_once("set.php");
 include_once("top.html");
 include_once("conn.php");
+include_once("extral/markdown/Markdown.php");
  ?>
 
 <div class="container-fluid">
@@ -67,7 +68,7 @@ include_once("conn.php");
               ?>
              <p>文章类别:<a href="index.php?category_id=<?php echo $rs['category_id']; ?>"><?php echo $categoryRs['title']; ?></a></p>
              <p><?php echo $rs['create_time']; ?></p>
-             <p ><?php echo $rs['content']; ?></p>
+             <p ><?php echo $my_html = Michelf\Markdown::defaultTransform($rs['content']); ?></p>
             </div>
           <?php } ?>
     </div>
