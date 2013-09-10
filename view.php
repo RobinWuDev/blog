@@ -14,6 +14,7 @@
         // mysql_query($sql);
     }  
  ?>
+ 
 <div class="container row-fluid">
   <div class="span2"></div>
   <div class="span8">
@@ -38,8 +39,9 @@
   </div>
   <div class="span2"></div>
 </div>
-<!-- Le javascript
+
+
 <?php 
   include_once("bottom.html");
- ?>
+?>
 

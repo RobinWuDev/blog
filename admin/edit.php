@@ -25,7 +25,7 @@
 
  ?>
 
-
+<link rel="stylesheet" type="text/css" href="/static/css/demo.css" />
 
 <div class="container-fluid">
   <div class="row-fluid">
@@ -43,41 +43,15 @@
           <li >
             <a href='articleManager.php'>全部</a>
           </li>
-          <?php 
-            $sql = "select * from `category`;";
-            $query = mysql_query($sql);
-            while ($rs = mysql_fetch_array($query)) {
-           ?>
-          <?php
-               $category = "";
-               if (!empty($_GET['category_id'])) {
-                   $category = $_GET['category_id'];
-               }
-               if ($category == $rs['id']) {
-                echo "<li class='active'>
-          <a>".$rs['title']."</a>
-        </li>
-        ";
-               } else {
-                echo "
-        <li >
-          <a href='articleManager.php?category_id=".$rs['id']."'>".$rs['title']."</a>
-        </li>
-        ";
-               }
-           }
-           ?>
+          <?php include_once("leftCategory.php"); ?> 
       </ul>
     </div>
   </div>
 
 
   <!-- 内容 -->
-  <link rel="stylesheet" type="text/css" href="/static/css/demo.css" />
+  
   <div class="span9" id="content">
-    <script type="text/javascript" src="/static/js/external/Markdown.Converter.js"></script>
-    <script type="text/javascript" src="/static/js/external/Markdown.Sanitizer.js"></script>
-    <script type="text/javascript" src="/static/js/external/Markdown.Editor.js"></script>
     <div class="row-fluid">
       <div class="well">
         <div id="myTabContent" class="tab-content">
@@ -122,21 +96,23 @@
         </div>
 
       </div>
-      <script type="text/javascript">
+    </div>
+  </div>
+
+  <!-- 内容 -->
+</div>
+</div>
+
+<script type="text/javascript" src="/static/js/external/Markdown.Converter.js"></script>
+<script type="text/javascript" src="/static/js/external/Markdown.Sanitizer.js"></script>
+<script type="text/javascript" src="/static/js/external/Markdown.Editor.js"></script>
+<script type="text/javascript">
     (function () {
           var converter1 = Markdown.getSanitizingConverter();
           var editor1 = new Markdown.Editor(converter1);
           editor1.run();
     })();
-    </script>
-    </div>
-  </div>
-
-  <!-- 内容 -->
-
-</div>
-</div>
-
+</script>
 <?php 
   include_once("bottom.html");
  ?>

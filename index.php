@@ -11,23 +11,7 @@ include_once("extral/markdown/Markdown.php");
       <div class="well sidebar-nav">
         <ul class="nav nav-list" id="categorys">
           <li class="nav-header">文章类别</li>
-          <?php 
-            $sql = "select * from `category`;";
-            $query = mysql_query($sql);
-            while ($rs = mysql_fetch_array($query)) {
-           ?>
-           <?php
-               $category = "";
-               if (!empty($_GET['category_id'])) {
-                   $category = $_GET['category_id'];
-               }
-               if ($category == $rs['id']) {
-                echo "<li class='active'><a>".$rs['title']."</a></li>";
-               } else {
-                echo "<li ><a href='index.php?category_id=".$rs['id']."'>".$rs['title']."</a></li>";
-               }
-           }
-           ?>
+          <?php include_once("leftCategory.php"); ?> 
         </ul>
       </div>
       </div>
@@ -72,30 +56,29 @@ include_once("extral/markdown/Markdown.php");
             </div>
           <?php } ?>
     </div>
-    <div id="example" class="span9 offset2" style="text-align: right;margin-bottom: 30px;"></div>
-    
-    <script type='text/javascript'>
-          var options = {
-            currentPage: <?php echo $page;?>,
-            totalPages: <?php echo $totalPage;?>,
-            pageUrl: function(type, page, current){
-                <?php 
-                    $w = "''";
-                    if (!empty($_GET['category_id'])) {
-                        $category = $_GET['category_id'];
-                        $w = "'&category_id=$category'";
-                    }
-                ?>
-                return "index?page="+page+<?php echo $w;?>;
-
-            }
-        }
-
-    $('#example').bootstrapPaginator(options);
-    </script>
-              
+    <div id="example" class="span9 offset2" style="text-align: right;margin-bottom: 30px;"></div>             
   </div>
 </div>
+   
+<script type='text/javascript'>
+      var options = {
+        currentPage: <?php echo $page;?>,
+        totalPages: <?php echo $totalPage;?>,
+        pageUrl: function(type, page, current){
+            <?php 
+                $w = "''";
+                if (!empty($_GET['category_id'])) {
+                    $category = $_GET['category_id'];
+                    $w = "'&category_id=$category'";
+                }
+            ?>
+            return "index?page="+page+<?php echo $w;?>;
+
+        }
+    }
+
+$('#example').bootstrapPaginator(options);
+</script>
 
  <?php 
 include_once("bottom.html");
