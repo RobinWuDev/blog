@@ -2,7 +2,8 @@
   include_once("../set.php");
   include_once("top.html");
   include_once(MYROOT."/conn.php");
-
+  include_once(MYROOT."/extral/markdown/Markdown.php");
+  
   if (!empty($_GET['id'])) {
         $id = $_GET['id'];
         $sql = "select * from `article` where id = '$id'";
@@ -33,8 +34,7 @@
 
     </div>
    <hr>
-    <p><?php echo $rs['content']; ?>
-    </p>
+    <p ><?php echo $my_html = Michelf\Markdown::defaultTransform($rs['content']); ?></p>
   </div>
   <div class="span2"></div>
 </div>
