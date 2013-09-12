@@ -1,5 +1,4 @@
 <?php 
-include_once("set.php");
 include_once("top.html");
 include_once("conn.php");
 include_once("extral/markdown/Markdown.php");
@@ -22,11 +21,23 @@ include_once("extral/markdown/Markdown.php");
                $page = $_GET['page'];
            }
 
-           $w = "1";
+           if (!isLogin()) {
+             $w = "is_private='0'";
+           }
+
            if (!empty($_GET['category_id'])) {
                $category = $_GET['category_id'];
-               $w = "category_id = '$category'";
+               if (empty($w)) {
+                 $w = "category_id = '$category'";
+               } else {
+                 $w .= " and category_id = '$category'";
+               }       
+           } else {
+              if (empty($w)) {
+                $w = "1";
+              }
            }
+
 
            $pageSize = 10;
            $countSql = "select count(*) as count from `article` where $w ;";
@@ -38,7 +49,7 @@ include_once("extral/markdown/Markdown.php");
                $totalPage++;
            }
 
-            $sql = "select * from `article` where $w limit ".(($page-1)*$pageSize).",$pageSize;";
+            $sql = "select * from `article` where $w order by `create_time` desc limit ".(($page-1)*$pageSize).",$pageSize ;";
             $query = mysql_query($sql);
             while ($rs = mysql_fetch_array($query)) {
            ?>

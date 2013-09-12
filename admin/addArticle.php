@@ -1,16 +1,19 @@
 <?php 
-  include_once("../set.php");
   include_once("top.html");
   include_once(MYROOT."/conn.php");
- 
+
     if (!empty($_POST['sub'])) {
         $title = $_POST['title'];
         $content = $_POST['content'];
         $categoryId = $_POST['category_id'];
-        $sql = "insert into `article` (`id`,`title`,`category_id`,`content`) values "
-        ."(null,'$title',$categoryId,'$content');";
+        @$isPrivate = getCheckBoxValue($_POST['isPrivate']);
+        @$isShare = getCheckBoxValue($_POST['isShare']);
+        @$isComment = getCheckBoxValue($_POST['isComment']);
+
+        $sql = "insert into `article` (`id`,`title`,`category_id`,`content`,`is_private`,`is_share`,`is_comment`) values "
+        ."(null,'$title',$categoryId,'$content','$isPrivate','$isShare','$isComment');";
         mysql_query($sql);
-        echo "添加成功";
+        echo "<script>alert('添加成功');</script>";
     }
 
  ?>
@@ -64,7 +67,17 @@
                   <?php } ?>
                 </select>
               </div>
-
+              <div class="control-group">
+                <label class="checkbox">
+                    <input type="checkbox" name="isPrivate"> 不公开
+                </label>
+                <label class="checkbox" >
+                    <input type="checkbox" name="isShare" checked="checked"> 允许分享
+                </label>
+                <label class="checkbox">
+                    <input type="checkbox" name="isComment" checked="checked"> 允许评论
+                </label>
+              </div>
               <div class="wmd-panel">
                 <div id="wmd-button-bar"></div>
                 <textarea name="content" class="wmd-input" id="wmd-input"></textarea>

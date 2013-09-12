@@ -1,8 +1,7 @@
 <?php 
-  include_once("../set.php");
   include_once("top.html");
   include_once(MYROOT."/conn.php");
- 
+
   if (!empty($_GET['id'])) {
         $id = $_GET['id'];
         $sql = "select * from `article` where id = '$id'";
@@ -12,13 +11,16 @@
 
     }
 
-    
     if (!empty($_POST['sub'])) {
         $title = $_POST['title'];
         $content = $_POST['content'];
-        $id = $_POST['id'];
         $categoryId = $_POST['category_id'];
-        $sql = "update `article` set `title` = '$title' , `content` = '$content', `category_id`='$categoryId' where id = '$id';";
+        @$isPrivate = getCheckBoxValue($_POST['isPrivate']);
+        @$isShare = getCheckBoxValue($_POST['isShare']);
+        @$isComment = getCheckBoxValue($_POST['isComment']);
+
+        $sql = "update `article` set `title` = '$title' , `content` = '$content', `category_id`='$categoryId' 
+        `is_private`='$isPrivate',`is_share`='$isShare',`is_comment`='$isComment' where id = '$id';";
         mysql_query($sql);
         echo "<script>alert('更新成功');location.href='articleManager.php';</script>";
     }
@@ -82,7 +84,17 @@
                   <?php } ?>
                 </select>
               </div>
-
+              <div class="control-group">
+                <label class="checkbox">
+                    <input type="checkbox" name="isPrivate" <?php echo getCheckBoxEchoValue($editRs['is_private']); ?>> 不公开
+                </label>
+                <label class="checkbox" >
+                    <input type="checkbox" name="isShare" <?php echo getCheckBoxEchoValue($editRs['is_share']); ?>> 允许分享
+                </label>
+                <label class="checkbox">
+                    <input type="checkbox" name="isComment" <?php echo getCheckBoxEchoValue($editRs['is_comment']); ?>> 允许评论
+                </label>
+              </div>
               <div class="wmd-panel">
                 <div id="wmd-button-bar"></div>
                 <textarea name="content" class="wmd-input" id="wmd-input"><?php echo $editRs['content']; ?></textarea>

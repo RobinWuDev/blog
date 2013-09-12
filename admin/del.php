@@ -1,5 +1,4 @@
 <?php 
-    include_once("../set.php");
     include_once("top.html");
     include_once(MYROOT."/conn.php");
 
@@ -7,7 +6,7 @@
         $d = $_GET['del'];
         $sql = "delete from `article` where `id` = '$d';";
         mysql_query($sql);
-        echo "删除成功";
+        echo "<script>alert('删除成功');</script>";
     }
     include_once("bottom.html");
  ?>

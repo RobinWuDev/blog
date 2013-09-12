@@ -35,7 +35,7 @@
 
     </div>
    <hr>
-    <p ><?php echo $my_html = Michelf\Markdown::defaultTransform($rs['content']); ?></p>
+    <p class="lead"><?php echo $my_html = Michelf\Markdown::defaultTransform($rs['content']); ?></p>
   </div>
   <div class="span2"></div>
 </div>

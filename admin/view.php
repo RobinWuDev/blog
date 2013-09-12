@@ -1,5 +1,4 @@
 <?php 
-  include_once("../set.php");
   include_once("top.html");
   include_once(MYROOT."/conn.php");
   include_once(MYROOT."/extral/markdown/Markdown.php");
