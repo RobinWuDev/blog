@@ -12,7 +12,9 @@
     </div>
     <div class="span9" id="content">
       <div class="hero-unit">一个想得多，做的少的无证程序员!</div>
+      
     </div>
+
   </div>
 </div>
 <?php 

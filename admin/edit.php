@@ -12,6 +12,7 @@
     }
 
     if (!empty($_POST['sub'])) {
+        $id = $_POST['id']; 
         $title = $_POST['title'];
         $content = $_POST['content'];
         $categoryId = $_POST['category_id'];
@@ -19,7 +20,7 @@
         @$isShare = getCheckBoxValue($_POST['isShare']);
         @$isComment = getCheckBoxValue($_POST['isComment']);
 
-        $sql = "update `article` set `title` = '$title' , `content` = '$content', `category_id`='$categoryId' 
+        $sql = "update `article` set `title` = '$title' , `content` = '$content', `category_id`='$categoryId', 
         `is_private`='$isPrivate',`is_share`='$isShare',`is_comment`='$isComment' where id = '$id';";
         mysql_query($sql);
         echo "<script>alert('更新成功');location.href='articleManager.php';</script>";

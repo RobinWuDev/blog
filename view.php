@@ -36,6 +36,9 @@
     </div>
    <hr>
     <p class="lead"><?php echo $my_html = Michelf\Markdown::defaultTransform($rs['content']); ?></p>
+    <hr>
+    <wb:share-button appkey="2ieqEY" addition="number" type="button" ralateUid="3369451532" title="<?php echo $rs['title']; ?>"></wb:share-button>
+    <wb:comments url="auto" border="y" brandline="y" width="auto" appkey="1423439076" ralateuid="3369451532">title="<?php echo $rs['title']; ?>"</wb:comments>
   </div>
   <div class="span2"></div>
 </div>

@@ -7,6 +7,10 @@ include_once("extral/markdown/Markdown.php");
 <div class="container-fluid">
   <div class="row-fluid">
     <div class="span3">
+      <div class="sidebar-nav">
+      <wb:follow-button uid="3369451532" type="red_3" width="100%" height="24" ></wb:follow-button>
+      <img src="http://service.t.sina.com.cn/widget/qmd/3369451532/a46781a9/1.png">
+      </div>
       <div class="well sidebar-nav">
         <ul class="nav nav-list" id="categorys">
           <li class="nav-header">文章类别</li>
