@@ -1,0 +1,34 @@
+{% extends "base.twig" %}
+{% block content %}
+<div class="container row-fluid">
+  <div class="span2"></div>
+  <div class="span8">
+    <h2 align="center">{{ article.title }}</h2>
+    <div class="row">
+      <div class="span4 offset2">
+        文章类别:{{ article.category_name }}
+      </div>
+      <div class="span4 offset2">
+        {{ article.create_time }}
+      </div>
+
+    </div>
+   <hr>
+    <p class="lead" id="articleContent">
+    	{% autoescape false %}
+			{{ article.content|markdown }}
+		{% endautoescape %}	
+    </p>
+    <hr>
+    {% if article.is_share == 1 %}
+    <wb:share-button appkey="2ieqEY" addition="number" type="button" ralateUid="3369451532" title="{{ article.title }}"></wb:share-button>
+    {% endif %}
+    {% if article.is_comment == 1 %}
+      <wb:comments url="auto" border="y" brandline="y" width="auto" appkey="1423439076" ralateuid="3369451532">title="{{ article.title }}"</wb:comments>
+    {% endif %}
+    </div>
+  <div class="span2"></div>
+</div>
+{% endblock %}
+
+

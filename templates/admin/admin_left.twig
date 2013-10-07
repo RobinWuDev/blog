@@ -1,0 +1,21 @@
+
+<div class="well sidebar-nav">
+  <ul class="nav nav-list" id="categorys">
+    <li class="nav-header">博客管理</li>
+    <li><a href="/admin/addArticle">发布文章</a></li>
+    <li><a href="/admin/categoryList">类别管理</a></li>
+    <li class="nav-header">文章管理</li>
+    <li  {% if data['categoryId'] == "0" %}class='active' {% endif %}><a href='/admin'>全部</a></li> 
+    {% for category in data['categorys'] %} 
+    	{% if category.id == data['categoryId'] %}
+	    <li class='active'><a>{{ category.title }}</a></li> 
+	    {% else %}
+	    <li><a href='/admin/index/{{ category.id }}'>{{ category.title }}</a></li> 
+	    {% endif %}
+     {% endfor %}
+  </ul>
+</div>
+
+
+
+

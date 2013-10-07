@@ -1,0 +1,52 @@
+{% extends "base.twig" %}
+{% block left %}
+	 <div class="sidebar-nav">
+        <wb:follow-button uid="3369451532" type="red_3" width="100%" height="24"></wb:follow-button>
+        <img src="http://service.t.sina.com.cn/widget/qmd/3369451532/a46781a9/1.png">
+      </div>
+      <div class="well sidebar-nav">
+        <ul class="nav nav-list" id="categorys">
+          <li class="nav-header">文章类别</li>
+          {% for category in data['categorys'] %}
+       	    {% if category.id == data['categoryId'] %}
+  				<li class='active'><a>{{ category.title }}</a></li>
+  			{% else %}
+       			<li ><a href='/{{ category.id }}'>{{ category.title }}</a></li>
+       		{% endif %}
+       	  {% endfor %}
+        </ul>
+      </div>
+{% endblock %}
+
+{% block right %}
+		{% for article in data['articles'] %}
+       	    <div class='hero-unit'>
+        		<h3>
+          			<a href="/article/detail/{{ article.id }}">{{ article.title }}</a>
+        		</h3>
+             	<p>
+          		文章类别:<a href="/{{ article.category_id }}">{{ article.category_name }}</a>
+        		</p>
+        		<p>{{ article.create_time }}</p>
+        		<p>
+					{% autoescape false %}
+    					{{ article.content|markdown }}
+					{% endautoescape %}	
+    			</p>	
+     		 </div>
+       	  {% endfor %}
+       	  <div id="example" class="span9 offset2" style="text-align: right; margin-bottom: 30px;"></div>
+       	  <script type='text/javascript'>
+	      var options = {
+	        currentPage: {{ data['currentPage'] }},
+	        totalPages: {{ data['totalPage'] }},
+	        pageUrl: function(type, page, current){
+	            return "/"+"{{ data['categoryId'] }}"+"/"+page;
+	
+	        	}
+	    	}
+		$('#example').bootstrapPaginator(options);
+</script>
+{% endblock %}
+
+

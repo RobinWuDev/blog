@@ -1,0 +1,6 @@
+{
+    "site-config": {
+        "site-name":"Robin吴的吐槽地",
+        "log-location":"logs/lsdev"
+    }
+}

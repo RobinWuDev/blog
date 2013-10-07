@@ -1,0 +1,12 @@
+{% extends "base.twig" %}
+{% block left %}
+      <div class="well sidebar-nav">
+        <ul class="nav nav-list" id="categorys">
+          <li class="active">错误信息</li>
+        </ul>
+      </div>
+{% endblock %}
+
+{% block right %}
+  <div class="hero-unit">{{ data['message'] }}</div>
+{% endblock %}

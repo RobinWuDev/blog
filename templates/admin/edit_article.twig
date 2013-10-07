@@ -1,0 +1,16 @@
+{% extends "base.twig" %}
+{% block header %}
+{% include "admin/admin_top.twig" %}
+{% endblock %}
+{% block content %}
+{% if data['del'] is defined  %}
+	{% if data['del'] %}
+	        <script>alert('删除成功');location.href='/admin/index';</script>
+	{% else  %}
+	 		<script>alert('删除失败');</script>
+	{% endif %}
+{% endif %}
+{% endblock %}
+
+
+

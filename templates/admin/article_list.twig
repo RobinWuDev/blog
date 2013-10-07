@@ -1,0 +1,47 @@
+{% extends "base.twig" %}
+{% block header %}
+{% include "admin/admin_top.twig" %}
+{% endblock %}
+{% block left %}
+{% include "admin/admin_left.twig" %}
+{% endblock %}
+
+{% block right %}
+<h3 id="article_h3">文章列表</h3>
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>标题</th>
+          <th>发表时间</th>
+          <th>分类</th>
+          <th>管理</th>
+        </tr>
+      </thead>
+      <tbody id="article_list">
+		{% for article in data['articles'] %}
+        <tr >
+          <td><a href="/article/detail/{{ article.id }}">{{ article.title }}</a></td>
+          <td>{{ article.create_time }}</td>
+          <td>{{ article.category_name }}</td>
+          <td><a href="/admin/editArticle/{{ article.id }}">编辑</a>|<a href="/admin/delArticle/{{ article.id }}">删除</a></td>
+        </tr>
+        {% endfor %}
+       </tbody>
+    </table>
+    <div id="example" class="span9 offset2" style="text-align: right; margin-bottom: 30px;"></div>
+       	  <script type='text/javascript'>
+		      var options = {
+		        currentPage: {{ data['currentPage'] }},
+		        totalPages: {{ data['totalPage'] }},
+		        pageUrl: function(type, page, current){
+		            return "/admin/index/"+"{{ data['categoryId'] }}"+"/"+page;
+		
+		        	}
+		    	}
+			$('#example').bootstrapPaginator(options);
+		</script>
+  	</div>
+</div>
+{% endblock %}
+
+
