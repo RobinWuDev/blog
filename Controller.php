@@ -39,10 +39,10 @@ class Controller {
 			
 			unset ( $route ['controller'] );
 			unset ( $route ['action'] );
-			
+		
 			if ($controller == "Admin" && ! isLogin ()) {
-				$controller = "user";
-				$action = "login";
+				$controller = "User";
+				$action = "Login";
 			}
 			
 			$model = $this->getModel ( $controller );
@@ -87,6 +87,7 @@ class Controller {
 
 	protected function includeClass($name) {
 		$file = str_replace ( '_', DIRECTORY_SEPARATOR, $name ) . '.php';
+		
 		if (! file_exists ( $file )) {
 			throw new Exception ( "类无法找到" );
 		}

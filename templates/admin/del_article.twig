@@ -1,85 +1,16 @@
 {% extends "base.twig" %}
 {% block header %}
-{% if data['edit'] is defined  %}
-	{% if data['edit'] %}
-	        <script>alert('更新成功');location.href='/admin/index';</script>
-	{% else  %}
-	 		<script>alert('更新失败');</script>
-	{% endif %}
-{% endif %}
 {% include "admin/admin_top.twig" %}
 {% endblock %}
-{% block left %}
-{% include "admin/admin_left.twig" %}
+{% block content %}
+{% if data['del'] is defined  %}
+	{% if data['del'] %}
+	        <script>alert('删除成功');location.href='/admin/index';</script>
+	{% else  %}
+	 		<script>alert('删除失败');</script>
+	{% endif %}
+{% endif %}
 {% endblock %}
 
-{% block right %}  
-
-  <!-- 内容 -->
-  <link rel="stylesheet" type="text/css" href="/static/css/demo.css" />
-  {% set article = data['article']  %}
-  {% set categorys = data['categorys']  %}
-  <div class="span9" id="content">
-    <div class="row-fluid">
-      <div class="well">
-        <div id="myTabContent" class="tab-content">
-          <div class="tab-pane active in" id="home">
-            <form id="tab" class="form-horizontal" action="/admin/editArticle" method="POST">
-              <input type="hidden" name="id" value="{{ article.id }}"/>
-              <div class="control-group">
-                文章标题:
-                <input type="text" name="title" id="add_article_title" value="{{ article.title }}" class="input-xlarge">
-                <span class="text-error" id="add_article_prompt_info"></span>
-              </div>
-              <div class="control-group">
-                选择类别:
-                <select name="category_id" id="select_category">
-                  {% for category in categorys %}
-                  	{% if category.id == article.category_id %}
-                       <option selected='selected' value="{{ category.id }}">{{ category.title }}</option>
-                    {% else %}
-                       <option value="{{ category.id }}">{{ category.title }}</option>
-                     {% endif %}
-                   {% endfor %}
-                </select>
-              </div>
-              <div class="control-group">
-                <label class="checkbox">
-                    <input type="checkbox" name="isPrivate" {{ article.is_private }}> 不公开
-                </label>
-                <label class="checkbox" >
-                    <input type="checkbox" name="isShare" {{ article.is_share }}> 允许分享
-                </label>
-                <label class="checkbox">
-                    <input type="checkbox" name="isComment" {{ article.is_comment }}> 允许评论
-                </label>
-              </div>
-              <div class="wmd-panel">
-                <div id="wmd-button-bar"></div>
-                <textarea name="content" class="wmd-input" id="wmd-input">{{ article.content }}</textarea>
-              </div>
-              <div id="wmd-preview" class="wmd-panel wmd-preview"></div>
-              <div class="btn-toolbar">
-                <input class="btn btn-primary" type="submit" name="sub" id="sub" value="更新"/>
-              </div>
-            </form>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </div>
-
-<script type="text/javascript" src="/static/js/external/Markdown.Converter.js"></script>
-<script type="text/javascript" src="/static/js/external/Markdown.Sanitizer.js"></script>
-<script type="text/javascript" src="/static/js/external/Markdown.Editor.js"></script>
-<script type="text/javascript">
-    (function () {
-          var converter1 = Markdown.getSanitizingConverter();
-          var editor1 = new Markdown.Editor(converter1);
-          editor1.run();
-    })();
-</script>
-{% endblock %}
 
 

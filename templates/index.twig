@@ -36,7 +36,10 @@
      		 </div>
        	  {% endfor %}
        	  <div id="example" class="span9 offset2" style="text-align: right; margin-bottom: 30px;"></div>
-       	  <script type='text/javascript'>
+{% endblock %}
+{% block js %}
+ {{ parent() }} 
+<script type='text/javascript'>
 	      var options = {
 	        currentPage: {{ data['currentPage'] }},
 	        totalPages: {{ data['totalPage'] }},

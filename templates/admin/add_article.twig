@@ -60,6 +60,9 @@
       </div>
     </div>
   </div>
+{% endblock %}
+{% block js %}
+ {{ parent() }} 
 <script type="text/javascript" src="/static/js/external/Markdown.Converter.js"></script>
 <script type="text/javascript" src="/static/js/external/Markdown.Sanitizer.js"></script>
 <script type="text/javascript" src="/static/js/external/Markdown.Editor.js"></script>
@@ -71,5 +74,4 @@
   })();
 </script>
 {% endblock %}
-
 
